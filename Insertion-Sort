@@ -28,6 +28,7 @@ void print(int arr[], int size)
 	}
 	cout << "\n";
 }
+
 //Insertion Sort Implementation
 void insertionSort(int arr[], int size)
 {
@@ -46,6 +47,3 @@ void insertionSort(int arr[], int size)
 
 	}
 }
-
-
-
