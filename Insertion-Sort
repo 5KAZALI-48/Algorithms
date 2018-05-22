@@ -1,1 +1,51 @@
+#include <iostream>
+
+using namespace std;
+#pragma warning(disable: 4996)						//Visual Studio
+
+//Forward Declerations
+void print(int arr[], int size);
+void insertionSort(int arr[], int size);
+
+int main()
+{
+	int ARRAY[] = { 5,2,4,6,1,3,11,0 };
+	int sizeOfArray = sizeof(ARRAY) / sizeof(ARRAY[0]);        //Determining the size of array
+	
+	//Function Calls
+	insertionSort(ARRAY, sizeOfArray);
+	print(ARRAY, sizeOfArray);
+	
+	return 0;
+}
+
+void print(int arr[], int size)
+{
+	cout << "Displaying Sorted Array : ";
+	for (int index = 0; index < size; index++)
+	{
+		cout << arr[index] << " ";
+	}
+	cout << "\n";
+}
+//Insertion Sort Implementation
+void insertionSort(int arr[], int size)
+{
+	int jj, key;
+	for (int ii = 1; ii < size; ii++)
+	{
+		key = arr[ii];
+		jj = ii - 1;
+
+		while (jj >= 0 && arr[jj] > key)
+		{
+			arr[jj + 1] = arr[jj];
+			jj = jj - 1;
+		}
+		arr[jj + 1] = key;
+
+	}
+}
+
+
 
