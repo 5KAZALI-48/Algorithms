@@ -1,0 +1,32 @@
+// Suppose you are comparing the implementation of the insertion sort and
+// merge-sort algorithm performance. Assume Insertion Sort runs a * n^2 steps
+// while Merge Sort runs b * n(lg n) steps. 
+
+
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+
+using namespace std;
+#define MAX_N 214748364833
+
+int main()
+{
+	int a, b, nValue, n = 2 ;
+	float ISort, MSort;
+	cout << "Please Enter a and b values :";
+	cin >> a >> b;
+	do
+	{
+		nValue = (2 * (pow(2.00, n)));
+		ISort = double(a * 2 * (pow(2.00, n)));
+		MSort = (double)(b * (n*(log2(n))));
+		cout << "Insertion Sort = "<< fixed << ISort << setprecision(5) << " " 
+			 << " Merge Sort = " << fixed    << MSort << setprecision(5) << endl;
+		cout << " n = " << nValue << endl;
+		n++;
+	} while (MSort > ISort);
+	cout << "Value of n that insertion sort beat merge sort is n: " << nValue << endl;
+	
+	return 0;
+}
