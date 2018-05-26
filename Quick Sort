@@ -1,0 +1,60 @@
+#include <iostream>
+#include <iomanip>
+#include <ctime>
+
+double Partition(double A[], int startIndex, int lastIndex);
+void QuickSort(double A[], int startIndex, int lastIndex);
+void Swap(double *a, double *b);
+
+int main()
+{
+    double arr[1000];
+    srand((unsigned)time(NULL));
+    cout << fixed << setprecision(2) << fixed;
+    for(int i = 1; i < 1000; i++)
+    {
+        arr[i] = 1+rand() %5000;
+        //cout << arr[i] << " ";
+    }
+
+    cout <<endl<<endl<< "*** Sorted Array ***" << endl;
+    //InsertionSort(arr, 200000);
+    QuickSort(arr, 1, 1000-1);
+	//Print(arr, 10000);
+
+
+}
+
+double Partition(double A[], int startIndex, int lastIndex)
+{
+	double pivot = A[lastIndex];
+	int i = (startIndex - 1);
+
+	for (int j = startIndex; j <= lastIndex-1; j++)
+	{
+		if (A[j] <= pivot)
+		{
+			i = i+1;
+			Swap(&A[i], &A[j]);
+		}
+	}
+	Swap(&A[i + 1], &A[lastIndex]);
+	return (i + 1);
+}
+//
+void QuickSort(double A[], int startIndex, int lastIndex)
+{
+	if (startIndex < lastIndex)
+	{
+		double partitioningIndex = Partition(A, startIndex, lastIndex);
+		QuickSort(A, startIndex, partitioningIndex - 1);
+		QuickSort(A, partitioningIndex + 1, lastIndex);
+	}
+}
+
+void Swap(double *a, double *b)
+{
+	double temp = *a;
+	*a = *b;
+	*b = temp;
+}
