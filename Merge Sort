@@ -1,0 +1,89 @@
+//Divide and Conquer Approach
+//Time Complexity is ϴ(nlogn) in Worst, avarage and best case 
+
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+
+int main()
+{
+	//Creating Random Elements to fill the Array
+	double Array [200000];
+	srand((unsigned)time(NULL));
+	cout << fixed << setprecision(2) << fixed;
+
+	for (int i = 0; i < 200000; i++)
+	{
+		Array[i] = 1 + rand() % 50;
+		//cout << "Index Number[" << i << "]-" << Array[i] << endl;
+	}
+	 MergeSort(Array, 0, 10-1);
+	 Print(Array, 20000);
+	 return 0;
+}
+
+void Merge(double A[], int p, int q, int r)
+{
+	
+  int  i, j, k;
+  int n1 = q - p + 1;           //Determining the size of Left sub array
+	int n2 = r - q;               //Determining the size of Right sub array
+	int L[n1], R[n2];
+
+	for (i = 0; i<n1; i++)        //Copying elements from Original Array to left sub array
+	{
+		L[i] = A[p + i];
+	}
+
+	for (j = 0; j<n2; j++)        //Copying elements from Original Array to right sub array
+	{
+		R[j] = A[q + j + 1];
+	}
+
+	i = 0;
+  j = 0;
+
+	for (k = p; i<n1&&j<n2; k++)   // Compare the index values in sub array and override to original array
+	{
+		if (L[i]<R[j])
+		{
+			A[k] = L[i++];
+		}
+		else
+		{
+			A[k] = R[j++];
+		}
+	}
+
+	while (i<n1)             
+	{
+		A[k++] = L[i++];
+	}
+
+	while (j<n2)             
+	{
+		A[k++] = R[j++];
+	}
+}
+
+//p is the first index of array
+//r is the last index of array
+void MergeSort(double A[], int p, int r)
+{
+	if (p < r)
+	{
+		int q = floor((p + r) / 2);
+		MergeSort(A, p, q);
+		MergeSort(A, q + 1, r);
+		Merge(A, p, q, r);
+	}
+}
+
+void Print(double A[], int size)
+{
+	for (int index = 0; index < size; index++)
+	{
+		cout << A[index] << " ";
+	}
+	cout << "\n";
+}
