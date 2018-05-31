@@ -1,0 +1,320 @@
+#include <iostream>
+#include <iomanip>
+#include <chrono>
+
+#define CLEARSCREEN system ( "cls" )
+//Forwar Declerations
+void InsertionSort(double *A, int size);
+double Partition(double *A, int startIndex, int lastIndex);
+void QuickSort(double *A, int startIndex, int lastIndex);
+void Merge(double *A, int p, int q, int r);
+void MergeSort(double *A, int p, int r);
+
+int ISExecutionTime(double *A, int array_size);
+int MSExecutionTime(double *A, int array_size);
+int QSExecutionTime(double *A, int array_size);
+
+void Swap(double *a, double *b);
+void Print(double *A, int size);
+double *CreateArray(int array_size);
+
+void clrscr();
+void flushStdIn();
+void callHelper(char choice);
+void Helper(char choice);
+
+using namespace std;
+using namespace std::chrono;
+
+int main()
+{
+    char choice = '\0';
+
+    do
+    {
+        cout << "Press [1] to Running of Insertion Sort" << endl;
+        cout << "Press [2] to Running of Merge Sort" << endl;
+        cout << "Press [3] to Running of Quick Sort" << endl;
+        cout << "Press [0] to Exit Program" << endl;
+        cin >> choice;
+        flushStdIn();
+        callHelper(choice);
+
+    }while(choice != '0');
+    return 0;
+}
+
+//User Defined Function to read and discard all inputs in stdin
+void flushStdIn()
+{
+	int c;
+	do c = getchar(); while (c != '\n' && c != EOF);
+}
+
+//Helper Function to clear previous menu
+void clrscr()
+{
+	system("@cls||clear");
+}
+
+//Helper function to call Function called Helper
+void callHelper(char choice)
+{
+	switch (choice)
+    {
+        case '1':
+        case '2':
+        case '3': Helper(choice);
+                  break;
+        case '0': break;
+        default: cout << "Invalid option" << endl;
+	}
+}
+
+//Menu Selection Process
+void Helper(char choice)
+{
+    system("cls");
+    char choice2 = '\0';
+    int IS,MS,QS,array_size;
+
+    double *ISA;
+    double *MSA;
+    double *QSA;
+
+    if(choice == '1')
+    {
+        cout << "Please Enter size of Array:" ;
+        cin >> array_size;
+        ISA = CreateArray(array_size);
+
+        cout << "Array is Created with specified size" << endl;
+        system("cls");
+
+        cout << "\t Press [d] to Display Output" << endl;
+        cout << "\t Press [r] to skip and just display running time..." << endl;
+        cin >> choice2;
+        system("cls");
+
+        if(choice2 == 'd' || choice2 == 'D')
+        {
+            InsertionSort(ISA, array_size);
+            Print(ISA, array_size);
+        }
+
+        if(choice2 == 'r' || choice2 == 'R')
+        {
+            IS = ISExecutionTime(ISA, array_size);
+            cout << "Insertion Sort[" << array_size << "] Running Time:" << IS << " microseconds" << endl;
+        }
+    }
+    if(choice == '2')
+    {
+        cout << "Please Enter size of Array:" ;
+        cin >> array_size;
+        cout << "Array is Created with specified size" << endl;
+        MSA = CreateArray(array_size);
+        system("cls");
+
+        cout << "\t Press [d] to Display Output" << endl;
+        cout << "\t Press [r] to skip and just display running time..." << endl;
+        cin >> choice2;
+        system("cls");
+
+        if(choice2 == 'd' || choice2 == 'D')
+        {
+            MergeSort(MSA, 1, array_size-1);
+            Print(MSA, array_size);
+        }
+
+        if(choice2 == 'r' || choice2 == 'R')
+        {
+            MS = MSExecutionTime(MSA, array_size);
+            cout << "Merge-Sort[" << array_size << "] Running Time:" << MS << " microseconds" << endl;
+        }
+
+    }
+    if(choice == '3')
+    {
+        cout << "Please Enter size of Array:" ;
+        cin  >> array_size;
+        cout << "Array is Created with specified size" << endl;
+        QSA = CreateArray(array_size);
+        system("cls");
+
+        cout << "\t Press [d] to Display Output" << endl;
+        cout << "\t Press [r] to skip and just display running time..." << endl;
+        cin >> choice2;
+
+        if(choice2 == 'd' || choice2 == 'D')
+        {
+            QuickSort(QSA, 1, array_size);
+            Print(QSA, array_size);
+        }
+        if(choice2 == 'r' || choice2 == 'R')
+        {
+            QS = QSExecutionTime(QSA, array_size-1);
+            cout << "Quick Sort["<< array_size << "] Running Time:" << QS << " microseconds" << endl;
+        }
+    }
+
+}
+
+//Helper Function to calculate running time for Insertion Sort Algorithm
+int ISExecutionTime(double *A, int array_size)
+{
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    InsertionSort(A, array_size);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    int duration = duration_cast<microseconds>( t2 - t1 ).count();
+    return duration;
+}
+
+//Helper Function to calculate running time for Merge Sort Algorithm
+int MSExecutionTime(double *A, int array_size)
+{
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    MergeSort(A, 0, array_size-1);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    int duration = duration_cast<microseconds>( t2 - t1 ).count();
+
+    return duration;
+}
+
+//Helper Function to calculate running time for Quick Sort Algorithm
+int QSExecutionTime(double *A, int array_size)
+{
+    high_resolution_clock::time_point t1 = high_resolution_clock::now();
+    QuickSort(A, 1, array_size - 1);
+    high_resolution_clock::time_point t2 = high_resolution_clock::now();
+    int duration = duration_cast<microseconds>( t2 - t1 ).count();
+
+    return  duration;
+}
+
+//Helper Function to to print initial&sorted array if it is needed
+void Print(double *A, int size)
+{
+	for (int index = 0; index < size; index++)
+	{
+		cout << *(A+index) << " ";
+	}
+	cout << "\n";
+}
+
+//Helper Function to Create a Random Array
+double *CreateArray(int array_size)
+{
+    double *my_array = new double[array_size];
+    srand((unsigned)time(NULL));
+    cout << fixed << setprecision(2) << fixed;
+    for(int i = 1; i < array_size; i++)
+    {
+        *(my_array + i) = 100+rand() %1000;
+    }
+    return my_array;
+}
+
+//Helper Function to swap index values for Quick Sort Algorithm
+void Swap(double *a, double *b)
+{
+	double temp = *a;
+	*a = *b;
+	*b = temp;
+}
+
+//Insertion Sort Algorithm Implementation
+void InsertionSort(double *A, int size)
+{
+	int i;
+	for (int j = 1; j < size; j++)
+	{
+		double key = *(A + j);
+		i = j - 1;
+		while (i >= 0 && *(A + i) > key)
+		{
+			*(A + i + 1) = *(A + i);
+			i = i - 1;
+		}
+		*(A + i + 1) = key;
+	}
+}
+
+//Quick Sort Algorithm Implementation
+void QuickSort(double *A, int startIndex, int lastIndex)
+{
+	if (startIndex < lastIndex)
+	{
+		double partitioningIndex = Partition(A, startIndex, lastIndex);
+		QuickSort(A, startIndex, partitioningIndex - 1);
+		QuickSort(A, partitioningIndex + 1, lastIndex);
+	}
+}
+
+double Partition(double *A, int startIndex, int lastIndex)
+{
+	double pivot = A[lastIndex];
+	int i = (startIndex - 1);
+
+	for (int j = startIndex; j <= lastIndex-1; j++)
+	{
+		if (A[j] <= pivot)
+		{
+			i = i+1;
+			Swap(&A[i], &A[j]);
+		}
+	}
+	Swap(&A[i + 1], &A[lastIndex]);
+	return (i + 1);
+}
+
+//Merge Sort Algorithm Implementation
+void Merge(double *A , int p, int q, int r)
+{
+
+    int  i, j, k;
+    int n1 = q - p + 1;           //Determining the size of Left sub array
+	int n2 = r - q;               //Determining the size of Right sub array
+
+	int L[n1], R[n2];
+
+	for (i = 0; i<n1; i++)        //Copying elements from Original Array to left sub array
+	{
+		L[i] = A[p + i];
+	}
+
+	for (j = 0; j<n2; j++)        //Copying elements from Original Array to right sub array
+	{
+		R[j] = A[q + 1 + j ];
+	}
+
+	i = 0;
+    j = 0;
+
+	for (k = p; i<n1&&j<n2; k++)   // Compare the index values in sub array and override to original array
+	{
+		if (L[i]<R[j])
+		{
+			A[k] = L[i];
+			i = i + 1 ;
+		}
+		else
+		{
+			A[k] = R[j];
+			j = j + 1;
+		}
+	}
+}
+
+//p is the first index of array
+//r is the last index of array
+void MergeSort(double *A, int p, int r)
+{
+	if (p < r)
+	{
+		int q = p + (r -p) / 2;
+		MergeSort(A, p, q);
+		MergeSort(A, q + 1, r);
+		Merge(A, p, q, r);
+	}
+}
